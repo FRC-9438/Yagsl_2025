@@ -7,13 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1 Meter Forward"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "1 Meter Back"
+            "pathName": "S1-to-J"
           }
         }
       ]

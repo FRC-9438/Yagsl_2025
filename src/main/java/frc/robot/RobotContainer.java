@@ -31,6 +31,8 @@ import frc.robot.commands.ClawCommand;
 import frc.robot.subsystems.ElavatorSubsystem;
 import frc.robot.commands.ElavatorCommand;
 
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.commands.ArmCommand;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -52,7 +54,7 @@ public class RobotContainer
 
  private final ElavatorSubsystem ElavatorSubsystem = new ElavatorSubsystem();
 
-                                                                      
+ private final ArmSubsystem ArmSubsystem = new ArmSubsystem();                                                                      
 
   // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
@@ -192,6 +194,10 @@ public class RobotContainer
 
         driverXbox.leftBumper().whileTrue(new ElavatorCommand(ElavatorSubsystem, 1)); // SlideUP
         driverXbox.rightBumper().whileTrue(new ElavatorCommand(ElavatorSubsystem, -1)); // SlideDOWN
+
+        driverXbox.leftBumper().whileTrue(new ArmCommand(ArmSubsystem, .5)); // ArmUP
+        driverXbox.rightBumper().whileTrue(new ArmCommand(ArmSubsystem, -.5)); // ArmDOWN
+    
 
     }
 }

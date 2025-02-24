@@ -9,8 +9,6 @@ public class ElavatorSubsystem extends SubsystemBase {
     private final SparkMax elavatorMotor2;
 
 
-    
-
     public ElavatorSubsystem() {
         elavatorMotor1 = new SparkMax(6, MotorType.kBrushless); // CAN ID 6
         elavatorMotor2 = new SparkMax(7, MotorType.kBrushless); // CAN ID 7

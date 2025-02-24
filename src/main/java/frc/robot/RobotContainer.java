@@ -28,6 +28,9 @@ import frc.robot.commands.ClimbCommand;
 import frc.robot.subsystems.ClawSubsystem;
 import frc.robot.commands.ClawCommand;
 
+import frc.robot.subsystems.ElavatorSubsystem;
+import frc.robot.commands.ElavatorCommand;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -46,6 +49,8 @@ public class RobotContainer
  private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
 
  private final ClawSubsystem ClawSubsystem = new ClawSubsystem();
+
+ private final ElavatorSubsystem ElavatorSubsystem = new ElavatorSubsystem();
 
                                                                       
 
@@ -185,7 +190,8 @@ public class RobotContainer
         driverXbox.a().whileTrue(new ClawCommand(ClawSubsystem, 1)); // ClawIN
         driverXbox.b().whileTrue(new ClawCommand(ClawSubsystem, 1)); // ClawOUT
 
-        
+        driverXbox.leftBumper().whileTrue(new ElavatorCommand(ElavatorSubsystem, 1)); // SlideUP
+        driverXbox.rightBumper().whileTrue(new ElavatorCommand(ElavatorSubsystem, -1)); // SlideDOWN
 
     }
 }

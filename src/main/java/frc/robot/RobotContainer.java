@@ -22,6 +22,10 @@ import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
 
+import frc.robot.subsystems.ClimbSubsystem;
+import frc.robot.commands.ClimbCommand;
+
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
  * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
@@ -35,6 +39,9 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve"));
+
+ private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+                                                                      
 
   // Applies deadbands and inverts controls because joysticks
   // are back-right positive while robot
@@ -136,49 +143,47 @@ public class RobotContainer
    * controllers or {@link edu.wpi.first.wpilibj2.command.button.CommandJoystick Flight joysticks}.
    */
   private void configureBindings()
-  {
-    // (Condition) ? Return-On-True : Return-on-False
+{
+    // Existing drive system bindings
     drivebase.setDefaultCommand(!RobotBase.isSimulation() ?
                                 driveFieldOrientedDirectAngle :
                                 driveFieldOrientedDirectAngleSim);
 
     if (Robot.isSimulation())
     {
-      driverXbox.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
+        driverXbox.start().onTrue(Commands.runOnce(() -> drivebase.resetOdometry(new Pose2d(3, 3, new Rotation2d()))));
     }
     if (DriverStation.isTest())
     {
-      drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!
+        drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity);
 
-      //driverXbox.b().whileTrue(drivebase.sysIdDriveMotorCommand());
-      driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
-      driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.back().whileTrue(drivebase.centerModulesCommand());
-      driverXbox.leftBumper().onTrue(Commands.none());
-      driverXbox.rightBumper().onTrue(Commands.none());
-    } else
+        driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+        driverXbox.y().whileTrue(drivebase.driveToDistanceCommand(1.0, 0.2));
+        driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        driverXbox.back().whileTrue(drivebase.centerModulesCommand());
+    } 
+    else
     {
-      driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      driverXbox.b().whileTrue(
-          drivebase.driveToPose(
-              new Pose2d(new Translation2d(6.161, 3.905), Rotation2d.fromDegrees(158.806)))
-                              );
-      driverXbox.y().whileTrue(drivebase.aimAtSpeaker(2));
-      driverXbox.start().whileTrue(Commands.none());
-      driverXbox.back().whileTrue(Commands.none());
-      driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
-      driverXbox.rightBumper().onTrue(Commands.none());
-    }
+        driverXbox.a().onTrue((Commands.runOnce(drivebase::zeroGyro)));
+        driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+        driverXbox.b().whileTrue(drivebase.driveToPose(new Pose2d(new Translation2d(6.161, 3.905), Rotation2d.fromDegrees(158.806))));
+        driverXbox.y().whileTrue(drivebase.aimAtSpeaker(2));
 
-  }
+        driverXbox.start().whileTrue(Commands.none());
+        driverXbox.back().whileTrue(Commands.none());
+        driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+
+        driverXbox.y().whileTrue(new ClimbCommand(climbSubsystem, 0.7)); // Climb UP
+        driverXbox.x().whileTrue(new ClimbCommand(climbSubsystem, -0.5)); // Climb DOWN
+    }
+}
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
    *
    * @return the command to run in autonomous
-   */
+   */ 
   public Command getAutonomousCommand()
   {
     // An example command will be run in autonomous

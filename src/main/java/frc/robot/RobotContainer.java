@@ -25,6 +25,9 @@ import swervelib.SwerveInputStream;
 import frc.robot.subsystems.ClimbSubsystem;
 import frc.robot.commands.ClimbCommand;
 
+import frc.robot.subsystems.ClawSubsystem;
+import frc.robot.commands.ClawCommand;
+
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -41,6 +44,9 @@ public class RobotContainer
                                                                                 "swerve"));
 
  private final ClimbSubsystem climbSubsystem = new ClimbSubsystem();
+
+ private final ClawSubsystem ClawSubsystem = new ClawSubsystem();
+
                                                                       
 
   // Applies deadbands and inverts controls because joysticks
@@ -175,6 +181,12 @@ public class RobotContainer
 
         driverXbox.y().whileTrue(new ClimbCommand(climbSubsystem, 0.7)); // Climb UP
         driverXbox.x().whileTrue(new ClimbCommand(climbSubsystem, -0.5)); // Climb DOWN
+
+        driverXbox.a().whileTrue(new ClawCommand(ClawSubsystem, 1)); // ClawIN
+        driverXbox.b().whileTrue(new ClawCommand(ClawSubsystem, 1)); // ClawOUT
+
+        
+
     }
 }
 

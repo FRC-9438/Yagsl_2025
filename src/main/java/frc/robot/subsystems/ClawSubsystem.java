@@ -13,8 +13,8 @@ public class ClawSubsystem extends SubsystemBase {
 
     public ClawSubsystem() {
         // Initialize motors with their respective CAN IDs
-        clawMotor1 = new SparkMax(10, MotorType.kBrushless);
-        clawMotor2 = new SparkMax(11, MotorType.kBrushless);
+        clawMotor1 = new SparkMax(70, MotorType.kBrushless); //CAN ID 70
+        clawMotor2 = new SparkMax(71, MotorType.kBrushless); //CAN ID 71
 
         // Create and configure the SparkMaxConfig for clawMotor1
         SparkMaxConfig config1 = new SparkMaxConfig();

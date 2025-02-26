@@ -8,7 +8,7 @@ public class ArmSubsystem extends SubsystemBase {
     private final SparkMax armMotor;
 
     public ArmSubsystem() {
-        armMotor = new SparkMax(5, MotorType.kBrushless); // CAN ID 5
+        armMotor = new SparkMax(60, MotorType.kBrushless); // CAN ID 60
         // Additional motor configuration if needed
     }
 

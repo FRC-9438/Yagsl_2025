@@ -12,7 +12,7 @@ public class ClimbSubsystem extends SubsystemBase {
 
     public ClimbSubsystem() {
         // Initialize motors with their respective CAN IDs
-        climbMotor1 = new SparkMax(80, MotorType.kBrushless); //CAN ID 80
+        climbMotor1 = new SparkMax(62, MotorType.kBrushless); //CAN ID 62
 
         // Create and configure the SparkMaxConfig for climbMotor1
         SparkMaxConfig config1 = new SparkMaxConfig();

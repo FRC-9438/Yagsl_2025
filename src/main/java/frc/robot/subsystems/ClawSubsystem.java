@@ -8,34 +8,25 @@ import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
 
 public class ClawSubsystem extends SubsystemBase {
-    private final SparkMax clawMotor1;
-    private final SparkMax clawMotor2;
+    private final SparkMax clawMotor;
 
     public ClawSubsystem() {
         // Initialize motors with their respective CAN IDs
-        clawMotor1 = new SparkMax(70, MotorType.kBrushless); //CAN ID 70
-        clawMotor2 = new SparkMax(71, MotorType.kBrushless); //CAN ID 71
+        clawMotor = new SparkMax(54, MotorType.kBrushless); //CAN ID 54
 
         // Create and configure the SparkMaxConfig for clawMotor1
         SparkMaxConfig config1 = new SparkMaxConfig();
         config1.inverted(false); // Set to 'true' if motor direction needs to be inverted
-        clawMotor1.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        // Create and configure the SparkMaxConfig for clawMotor2
-        SparkMaxConfig config2 = new SparkMaxConfig();
-        config2.inverted(true); // Set to 'false' if motor direction is correct
-        clawMotor2.configure(config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        clawMotor.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
     }
 
     // Method to control the climbing mechanism
     public void Intake(double speed) {
-        clawMotor1.set(speed);
-        clawMotor2.set(speed);
+        clawMotor.set(speed);
     }
 
     // Method to stop the climbing mechanism
     public void stopIntake() {
-        clawMotor1.set(0);
-        clawMotor2.set(0);
+        clawMotor.set(0);
     }
 }

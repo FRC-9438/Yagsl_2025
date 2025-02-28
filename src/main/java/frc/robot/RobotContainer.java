@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+//import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.commands.swervedrive.drivebase.AbsoluteDriveAdv;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
@@ -47,9 +47,9 @@ public class RobotContainer
 
   // POV (D-pad) buttons for operator
   private final POVButton dpadUpButton    = new POVButton(operatorXbox.getHID(), 0);
-  private final POVButton dpadRightButton = new POVButton(operatorXbox.getHID(), 90);
+  //private final POVButton dpadRightButton = new POVButton(operatorXbox.getHID(), 90);
   private final POVButton dpadDownButton  = new POVButton(operatorXbox.getHID(), 180);
-  private final POVButton dpadLeftButton  = new POVButton(operatorXbox.getHID(), 270);
+  //private final POVButton dpadLeftButton  = new POVButton(operatorXbox.getHID(), 270);
 
   // -------------------------------
   // Subsystems

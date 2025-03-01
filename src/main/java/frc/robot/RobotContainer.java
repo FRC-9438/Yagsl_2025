@@ -217,13 +217,13 @@ public class RobotContainer
       dpadUpButton.onTrue(new SetElavatorPositionCommand(ElavatorSubsystem, ElavatorSubsystem.L1, 1.0));
       dpadDownButton.onTrue(new SetElavatorPositionCommand(ElavatorSubsystem, ElavatorSubsystem.L2, 1.0));
       dpadRightButton.onTrue(new SetElavatorPositionCommand(ElavatorSubsystem, ElavatorSubsystem.L3, 1.0));
-}
 
       // Arm
       operatorXbox.x().whileTrue(new ArmCommand(ArmSubsystem, 0.35));  // ArmUP
       operatorXbox.y().whileTrue(new ArmCommand(ArmSubsystem, -0.35)); // ArmDOWN
     }
   }
+
 
   // ----------------------------------
   // Autonomous

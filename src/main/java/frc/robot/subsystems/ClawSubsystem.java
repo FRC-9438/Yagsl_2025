@@ -6,36 +6,51 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.SparkBase.ResetMode;
 import com.revrobotics.spark.SparkBase.PersistMode;
+import com.revrobotics.spark.SparkClosedLoopController;
 
 public class ClawSubsystem extends SubsystemBase {
-    private final SparkMax clawMotor1;
-    private final SparkMax clawMotor2;
 
+    // Motor controller
+    private final SparkMax clawMotor;
+    
+    // PID controller
+    private final SparkClosedLoopController clawPID;
+  
+    // PID coefficients
+    private static final double kP = 0.1;
+    private static final double kI = 0.0;
+    private static final double kD = 0.0;
+  
+    // Setpoints
+    private static final double UNLOAD_POSITION  = 0.7;
+    private static final double LOAD_POSITION = -1.5; // Example value
+  
     public ClawSubsystem() {
-        // Initialize motors with their respective CAN IDs
-        clawMotor1 = new SparkMax(70, MotorType.kBrushless); //CAN ID 70
-        clawMotor2 = new SparkMax(71, MotorType.kBrushless); //CAN ID 71
-
-        // Create and configure the SparkMaxConfig for clawMotor1
-        SparkMaxConfig config1 = new SparkMaxConfig();
-        config1.inverted(false); // Set to 'true' if motor direction needs to be inverted
-        clawMotor1.configure(config1, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
-
-        // Create and configure the SparkMaxConfig for clawMotor2
-        SparkMaxConfig config2 = new SparkMaxConfig();
-        config2.inverted(true); // Set to 'false' if motor direction is correct
-        clawMotor2.configure(config2, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+        // Initialize motor on CAN ID 60, brushless
+        clawMotor = new SparkMax(60, MotorType.kBrushless);
+  
+        // Create a new configuration object
+        SparkMaxConfig config = new SparkMaxConfig();
+  
+        // Set desired configurations
+        config.inverted(false); // Set according to your hardware setup
+        config.closedLoop.pid(kP, kI, kD);
+        config.closedLoop.outputRange(-1.0, 1.0);
+  
+        // Apply the configuration with a safe reset and persist the parameters
+        clawMotor.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+  
+        // Retrieve the PID controller
+        clawPID = clawMotor.getClosedLoopController();
     }
-
-    // Method to control the climbing mechanism
-    public void Intake(double speed) {
-        clawMotor1.set(speed);
-        clawMotor2.set(speed);
+  
+    // Set the claw position
+    public void setPosition(double position) {
+        clawPID.setReference(position, SparkMax.ControlType.kPosition);
     }
-
-    // Method to stop the climbing mechanism
-    public void stopIntake() {
-        clawMotor1.set(0);
-        clawMotor2.set(0);
+  
+    // Manual control
+    public void setPower(double percentOutput) {
+        clawMotor.set(percentOutput);
     }
 }

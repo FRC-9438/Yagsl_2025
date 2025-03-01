@@ -1,5 +1,6 @@
 package frc.robot.subsystems;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
@@ -17,9 +18,9 @@ public class ElavatorSubsystem extends SubsystemBase {
     }
 
     public void moveArm(double speed) {
-        elavatorMotor1.set(speed);
+        elavatorMotor1.set(-speed);
         elavatorMotor2.set(speed);
-
+        //PIDController.setReferance(targetPosition, SparkMax.ControlType.kPosition);
     }
 
     public void stopArm() {

@@ -605,6 +605,7 @@ public class SwerveSubsystem extends SubsystemBase
   public void zeroGyro()
   {
     swerveDrive.zeroGyro();
+    //resetOdometry(new Pose2d(getPose().getTranslation(), Rotation2d.fromDegrees(180)));
   }
 
 
@@ -613,10 +614,10 @@ public class SwerveSubsystem extends SubsystemBase
    *
    * @return true if the red alliance, false if blue. Defaults to false if none is available.
    */
-  private boolean isRedAlliance()
+  private boolean isBlueAlliance()
   {
     var alliance = DriverStation.getAlliance();
-    return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Red : false;
+    return alliance.isPresent() ? alliance.get() == DriverStation.Alliance.Blue : false;
   }
 
   /**
@@ -626,7 +627,7 @@ public class SwerveSubsystem extends SubsystemBase
    */
   public void zeroGyroWithAlliance()
   {
-    if (isRedAlliance())
+    if (isBlueAlliance())
     {
       zeroGyro();
       //Set the pose 180 degrees

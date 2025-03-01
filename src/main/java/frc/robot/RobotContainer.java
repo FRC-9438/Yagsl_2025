@@ -47,7 +47,7 @@ public class RobotContainer
 
   // POV (D-pad) buttons for operator
   private final POVButton dpadUpButton    = new POVButton(operatorXbox.getHID(), 0);
-  //private final POVButton dpadRightButton = new POVButton(operatorXbox.getHID(), 90);
+  private final POVButton dpadRightButton = new POVButton(operatorXbox.getHID(), 90);
   private final POVButton dpadDownButton  = new POVButton(operatorXbox.getHID(), 180);
   //private final POVButton dpadLeftButton  = new POVButton(operatorXbox.getHID(), 270);
 
@@ -135,7 +135,7 @@ public class RobotContainer
     configureBindings();
 
     // Zero the gyro to correct alliance if needed
-    drivebase.zeroGyroWithAlliance();
+    drivebase.zeroGyro();
     DriverStation.silenceJoystickConnectionWarning(true);
 
     NamedCommands.registerCommand("test", Commands.print("I EXIST"));
@@ -152,6 +152,10 @@ public class RobotContainer
             ? driveFieldOrientedDirectAngle
             : driveFieldOrientedDirectAngleSim
     );
+
+    ElavatorSubsystem.setDefaultCommand(new ElavatorCommand(ElavatorSubsystem, .1)); 
+ 
+    ClawSubsystem.setDefaultCommand(new ClawCommand(ClawSubsystem, .2));
 
     if (Robot.isSimulation())
     {
@@ -196,31 +200,32 @@ public class RobotContainer
       // ------------------
 
       // Climb
-      operatorXbox.rightBumper().whileTrue(new ClimbCommand(climbSubsystem, 0.25)); // UP
-      operatorXbox.leftBumper().whileTrue(new ClimbCommand(climbSubsystem, -0.25)); // DOWN
+      operatorXbox.rightBumper().whileTrue(new ClimbCommand(climbSubsystem, 0.5)); // UP
+      operatorXbox.leftBumper().whileTrue(new ClimbCommand(climbSubsystem, -0.5)); // DOWN
 
       // Claw
-      operatorXbox.a().whileTrue(new ClawCommand(ClawSubsystem, 1));  // IN
-      operatorXbox.b().whileTrue(new ClawCommand(ClawSubsystem, 1));  // OUT?
+      operatorXbox.a().onTrue(new ClawCommand(ClawSubsystem, .2));  // IN
+      operatorXbox.b().whileTrue(new ClawCommand(ClawSubsystem, 0));  // OUT?
       // (If you really want "out" to be reversed, use -1 for the second line)
 
       // Elevator on D-pad
-      dpadUpButton.whileTrue(new ElavatorCommand(ElavatorSubsystem, 1));    // SlideUP
-      dpadDownButton.whileTrue(new ElavatorCommand(ElavatorSubsystem, -1)); // SlideDOWN
+      dpadUpButton.whileTrue(new ElavatorCommand(ElavatorSubsystem, .5));    // SlideUP
+      dpadDownButton.whileTrue(new ElavatorCommand(ElavatorSubsystem, -0.5)); // SlideDOWN
+      dpadRightButton.onTrue(new ElavatorCommand(ElavatorSubsystem, 0)); 
 
       // Arm
-      operatorXbox.x().whileTrue(new ArmCommand(ArmSubsystem, 0.5));  // ArmUP
-      operatorXbox.y().whileTrue(new ArmCommand(ArmSubsystem, -0.5)); // ArmDOWN
+      operatorXbox.x().whileTrue(new ArmCommand(ArmSubsystem, 0.35));  // ArmUP
+      operatorXbox.y().whileTrue(new ArmCommand(ArmSubsystem, -0.35)); // ArmDOWN
     }
   }
 
   // ----------------------------------
   // Autonomous
   // ----------------------------------
-  public Command getAutonomousCommand()
+  //public Command getAutonomousCommand()
   {
     // Example command used for autonomous
-    return drivebase.getAutonomousCommand("Blue Auto 1");
+    //return drivebase.getAutonomousCommand("Blue Auto 1");
   }
 
   // ----------------------------------

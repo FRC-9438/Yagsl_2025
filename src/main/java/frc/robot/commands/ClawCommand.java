@@ -5,26 +5,23 @@ import frc.robot.subsystems.ClawSubsystem;
 
 public class ClawCommand extends Command {
     private final ClawSubsystem clawSubsystem;
-    private final double speed;
+    private final double targetPosition;
+    private final double tolerance;
 
-    public ClawCommand(ClawSubsystem subsystem, double speed) {
+    public ClawCommand(ClawSubsystem subsystem, double targetPosition, double tolerance) {
         this.clawSubsystem = subsystem;
-        this.speed = speed;
-        addRequirements(subsystem); // Prevents other commands from interrupting
+        this.targetPosition = targetPosition;
+        this.tolerance = tolerance;
+        addRequirements(subsystem);
     }
 
     @Override
-    public void execute() {
-        clawSubsystem.Intake(speed); // Moves the climbing mechanism at the specified speed
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        clawSubsystem.stopIntake(); // Stops the motor when the command ends
+    public void initialize() {
+        clawSubsystem.setPosition(targetPosition);
     }
 
     @Override
     public boolean isFinished() {
-        return false; // Runs continuously until interrupted
+        return clawSubsystem.atSetpoint(targetPosition, tolerance);
     }
 }

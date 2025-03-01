@@ -155,7 +155,7 @@ public class RobotContainer
 
     ElavatorSubsystem.setDefaultCommand(new ElavatorCommand(ElavatorSubsystem, .1)); 
  
-    ClawSubsystem.setDefaultCommand(new ClawCommand(ClawSubsystem, .2));
+    //ClawSubsystem.setDefaultCommand(new ClawCommand(ClawSubsystem, .2));
 
     if (Robot.isSimulation())
     {
@@ -204,8 +204,8 @@ public class RobotContainer
       operatorXbox.leftBumper().whileTrue(new ClimbCommand(climbSubsystem, -0.5)); // DOWN
 
       // Claw
-      operatorXbox.a().onTrue(new ClawCommand(ClawSubsystem, .2));  // IN
-      operatorXbox.b().whileTrue(new ClawCommand(ClawSubsystem, 0));  // OUT?
+      operatorXbox.a().whileTrue(new ClawCommand(ClawSubsystem, ClawSubsystem.Intake, 1.0));  // IN
+      operatorXbox.b().whileTrue(new ClawCommand(ClawSubsystem, ClawSubsystem.Stop, 1));  // OUT?
       // (If you really want "out" to be reversed, use -1 for the second line)
 
       // Elevator on D-pad

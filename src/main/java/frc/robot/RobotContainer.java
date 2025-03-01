@@ -32,7 +32,7 @@ import frc.robot.commands.ClawCommand;
 
 import frc.robot.subsystems.ElavatorSubsystem;
 import frc.robot.commands.ElavatorCommand;
-
+import frc.robot.commands.SetElavatorPositionCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.commands.ArmCommand;
 
@@ -209,9 +209,15 @@ public class RobotContainer
       // (If you really want "out" to be reversed, use -1 for the second line)
 
       // Elevator on D-pad
-      dpadUpButton.whileTrue(new ElavatorCommand(ElavatorSubsystem, .5));    // SlideUP
-      dpadDownButton.whileTrue(new ElavatorCommand(ElavatorSubsystem, -0.5)); // SlideDOWN
-      dpadRightButton.onTrue(new ElavatorCommand(ElavatorSubsystem, 0)); 
+     // Default Elevator & Claw Power
+      //ElavatorSubsystem.setDefaultCommand(new ElavatorCommand(ElavatorSubsystem, .1)); 
+      //ClawSubsystem.setDefaultCommand(new ClawCommand(ClawSubsystem, .2));
+
+    // Elevator Setpoints (Using PID Control)
+      dpadUpButton.onTrue(new SetElavatorPositionCommand(ElavatorSubsystem, ElavatorSubsystem.L1, 1.0));
+      dpadDownButton.onTrue(new SetElavatorPositionCommand(ElavatorSubsystem, ElavatorSubsystem.L2, 1.0));
+      dpadRightButton.onTrue(new SetElavatorPositionCommand(ElavatorSubsystem, ElavatorSubsystem.L3, 1.0));
+}
 
       // Arm
       operatorXbox.x().whileTrue(new ArmCommand(ArmSubsystem, 0.35));  // ArmUP

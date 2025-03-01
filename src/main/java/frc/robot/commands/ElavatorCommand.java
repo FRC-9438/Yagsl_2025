@@ -10,21 +10,21 @@ public class ElavatorCommand extends Command {
     public ElavatorCommand(ElavatorSubsystem subsystem, double speed) {
         this.elavatorSubsystem = subsystem;
         this.speed = speed;
-        addRequirements(subsystem); // Prevents other commands from interrupting
+        addRequirements(subsystem);
     }
 
     @Override
     public void execute() {
-        elavatorSubsystem.moveArm(speed); // Moves the elevator at the specified speed
+        elavatorSubsystem.moveArm(speed);
     }
 
     @Override
     public void end(boolean interrupted) {
-        elavatorSubsystem.stopArm(); // Stops the motor when the command ends
+        elavatorSubsystem.stopArm();
     }
 
     @Override
     public boolean isFinished() {
-        return false; // Runs continuously until interrupted
+        return false;
     }
 }
